@@ -1,8 +1,13 @@
 package br.ufrn.imd.songs.service;
 
-import br.ufrn.imd.songs.model.Song;
+import br.ufrn.imd.songs.dto.song.SongPopularityMapper;
+import br.ufrn.imd.songs.dto.song.SongPopularityPost;
+import br.ufrn.imd.songs.dto.song.SongPopularityPut;
+import br.ufrn.imd.songs.exception.NotFoundException;
 import br.ufrn.imd.songs.model.SongPopularity;
+import br.ufrn.imd.songs.repository.SongPopularityDynamicQueryRepository;
 import br.ufrn.imd.songs.repository.SongPopularityRepository;
+import br.ufrn.imd.songs.repository.SongRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,32 +20,34 @@ import java.util.Optional;
 public class SongPopularityService {
 
     private final SongPopularityRepository songPopularityRepository;
+    private final SongRepository songRepository;
+    private final SongPopularityDynamicQueryRepository songPopularityDynamicQueryRepository;
 
-    public SongPopularity save(SongPopularity songPopularity){
+    public SongPopularity save(SongPopularityPost songPopularityPost) {
+        SongPopularity songPopularity = SongPopularityMapper.INSTANCE.postToSongPopularity(songPopularityPost);
+        songPopularity.setScore(0L);
         return songPopularityRepository.save(songPopularity);
     }
 
-    public Optional<SongPopularity> findById(String id){
+    public Optional<SongPopularity> findById(String id) {
         return songPopularityRepository.findById(id);
     }
 
-    public SongPopularity findBySongId(String songId){
-        return songPopularityRepository.findBySongId(songId);
+    public List<SongPopularity> findAll(String songId, LocalDate day, String userId, Long score) {
+        return songPopularityDynamicQueryRepository.findAllBySongIdAndDayAndUserIdAndScore(songId, day, userId, score);
     }
 
-    public SongPopularity findByUserId(String userId){
-        return songPopularityRepository.findByUserId(userId);
+    public SongPopularity update(SongPopularityPut songPopularityPut) {
+        SongPopularity savedSongPopularity = songPopularityRepository.findById(songPopularityPut.id())
+                .orElseThrow(() -> new NotFoundException("Song popularity don't exists."));
+
+        SongPopularity songPopularity = SongPopularityMapper.INSTANCE.putToSongPopularity(songPopularityPut);
+        songPopularity.setId(savedSongPopularity.getId());
+
+        return songPopularityRepository.save(songPopularity);
     }
 
-    public SongPopularity findByDay(LocalDate day){
-        return songPopularityRepository.findByDay(day);
-    }
-
-    public List<SongPopularity> findAll(){
-        return songPopularityRepository.findAll();
-    }
-
-    public void delete(String id){
+    public void delete(String id) {
         songPopularityRepository.deleteById(id);
     }
 }

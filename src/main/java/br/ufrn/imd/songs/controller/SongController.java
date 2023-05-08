@@ -1,7 +1,10 @@
 package br.ufrn.imd.songs.controller;
 
+import br.ufrn.imd.songs.dto.song.SongPopularityPut;
 import br.ufrn.imd.songs.dto.song.SongPost;
+import br.ufrn.imd.songs.dto.song.SongPut;
 import br.ufrn.imd.songs.model.Song;
+import br.ufrn.imd.songs.model.SongPopularity;
 import br.ufrn.imd.songs.service.SongService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -12,22 +15,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("songs")
 @AllArgsConstructor
+@RequestMapping("/songs")
 public class SongController {
 
     private final SongService songService;
 
 
     @GetMapping()
-    public ResponseEntity<List<Song>> findAll(@RequestParam(required = false) String genre,
-                                              @RequestParam(required = false) String artist,
-                                              @RequestParam(required = false) String name) {
+    public ResponseEntity<List<Song>> findAll(
+            @RequestParam(required = false, defaultValue = "") String genre,
+            @RequestParam(required = false, defaultValue = "") String artist,
+            @RequestParam(required = false, defaultValue = "") String name) {
 
-        if(genre != null) return ResponseEntity.ok(songService.findAllByGenre(genre));
-        else if(artist != null) return ResponseEntity.ok(songService.findAllByArtist(artist));
-        else if(name != null) return ResponseEntity.ok(songService.findAllByName(name));
-        else return ResponseEntity.ok(songService.findAll());
+        return ResponseEntity.ok(songService.findAll(genre, artist, name));
     }
 
     @PostMapping
@@ -40,7 +41,12 @@ public class SongController {
     public ResponseEntity<Song> findById(@PathVariable String id) throws Exception {
         return ResponseEntity.ok(songService
                 .findById(id)
-                .orElseThrow(() -> new Exception("User don't exists.")));
+                .orElseThrow(() -> new Exception("Song don't exists.")));
+    }
+
+    @PutMapping
+    public ResponseEntity<Song> update(@RequestBody SongPut songPut){
+        return ResponseEntity.ok(songService.update(songPut));
     }
 
 

@@ -1,10 +1,8 @@
 package br.ufrn.imd.songs.dto.song;
 
-public record SongPost(String name, String artist, String genre) {
+import jakarta.validation.constraints.NotNull;
 
-//    private String name;
-//
-//    private String artist;
-//
-//    private String genre;
+public record SongPost(@NotNull String name,
+                       @NotNull String artist,
+                       @NotNull String genre) {
 }

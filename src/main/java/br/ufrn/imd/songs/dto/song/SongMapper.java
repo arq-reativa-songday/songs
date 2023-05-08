@@ -8,4 +8,5 @@ import org.mapstruct.factory.Mappers;
 public interface SongMapper {
     SongMapper INSTANCE = Mappers.getMapper(SongMapper.class);
     Song postToSong(SongPost songPost);
+    Song putToSong(SongPut songPut);
 }

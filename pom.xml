@@ -17,6 +17,7 @@
         <java.version>17</java.version>
         <org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
         <org.projectlombok.version>1.18.22</org.projectlombok.version>
+        <org.springdoc.version>1.7.0</org.springdoc.version>
     </properties>
 
     <dependencies>
@@ -81,6 +82,11 @@
             <version>2.0.2</version>
         </dependency>
     </dependencies>
+    <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-ui</artifactId>
+        <version>${org.springdoc.version}</version>
+    </dependency>
 
     <build>
         <plugins>
