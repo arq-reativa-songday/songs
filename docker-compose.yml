@@ -1,8 +1,8 @@
 version: '3.9'
 
 networks:
-  songs-network:
-    name: songs
+  songday-network:
+    name: songday
 
 services:
   mongo:
@@ -19,7 +19,7 @@ services:
       TZ: "America/Fortaleza"
     command: [ --auth ]
     networks:
-      - songs-network
+      - songday-network
     restart: always
     healthcheck:
       test: echo 'db.stats().ok' | mongo localhost:27017/test --quiet
@@ -36,7 +36,7 @@ services:
       mongo:
         condition: service_healthy
     ports:
-      - ${SONGS_PORT_EXTERNAL}:8082
+      - ${SONGS_PORT_EXTERNAL}:8081
     networks:
-      - songs-network
+      - songday-network
     restart: always
