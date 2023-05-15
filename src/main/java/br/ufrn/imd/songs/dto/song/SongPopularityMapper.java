@@ -10,5 +10,8 @@ public interface SongPopularityMapper {
 
     SongPopularity postToSongPopularity(SongPopularityPost songPopularityPost);
 
+    SongPopularityPost songPopularityToPost(SongPopularity songPopularity);
     SongPopularity putToSongPopularity(SongPopularityPut songPopularityPut);
+    SongPopularityPut songPopularityToPut(SongPopularity songPopularity);
+
 }

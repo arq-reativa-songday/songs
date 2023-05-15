@@ -82,11 +82,6 @@
             <version>2.0.2</version>
         </dependency>
     </dependencies>
-    <dependency>
-        <groupId>org.springdoc</groupId>
-        <artifactId>springdoc-openapi-ui</artifactId>
-        <version>${org.springdoc.version}</version>
-    </dependency>
 
     <build>
         <plugins>
