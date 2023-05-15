@@ -2,7 +2,6 @@ package br.ufrn.imd.songs.repository;
 
 import br.ufrn.imd.songs.model.SongPopularity;
 import lombok.AllArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;

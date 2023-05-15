@@ -1,5 +1,6 @@
 package br.ufrn.imd.songs.controller;
 
+import br.ufrn.imd.songs.dto.song.SongPopularityMapper;
 import br.ufrn.imd.songs.dto.song.SongPopularityPost;
 import br.ufrn.imd.songs.dto.song.SongPopularityPut;
 import br.ufrn.imd.songs.model.SongPopularity;
@@ -29,9 +30,29 @@ public class SongPopularityController {
         return ResponseEntity.ok(songPopularityService.findAll(songId, day, userId, score));
     }
 
+
+
     @PostMapping
     public ResponseEntity<SongPopularity> save(@Valid @RequestBody SongPopularityPost songPopularityPost) {
         return new ResponseEntity<>(songPopularityService.save(songPopularityPost), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/score")
+    public ResponseEntity<Void> updateScore(@RequestParam(name = "songId") String songId) {
+
+        List<SongPopularity> songPopularity = songPopularityService
+                .findAll(songId, LocalDate.now(), "", null);
+
+        if (songPopularity.isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+        SongPopularity songPopularityFound = songPopularity.get(0);
+        songPopularityFound.setScore(songPopularityFound.getScore() + 1);
+        SongPopularityPut songPopularityPut = SongPopularityMapper.INSTANCE
+                .songPopularityToPut(songPopularityFound);
+        songPopularityService.update(songPopularityPut);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
