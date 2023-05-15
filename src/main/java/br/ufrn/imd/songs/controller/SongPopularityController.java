@@ -43,14 +43,20 @@ public class SongPopularityController {
         List<SongPopularity> songPopularity = songPopularityService
                 .findAll(songId, LocalDate.now(), "", null);
 
-        if (songPopularity.isEmpty())
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        SongPopularity songPopularityFound;
 
-        SongPopularity songPopularityFound = songPopularity.get(0);
-        songPopularityFound.setScore(songPopularityFound.getScore() + 1);
-        SongPopularityPut songPopularityPut = SongPopularityMapper.INSTANCE
-                .songPopularityToPut(songPopularityFound);
-        songPopularityService.update(songPopularityPut);
+        if (songPopularity.isEmpty()){
+            songPopularityFound = songPopularityService
+                    .save(new SongPopularityPost(songId, LocalDate.now(), "", null));
+        }
+        else{
+            songPopularityFound  = songPopularity.get(0);
+        }
+
+            songPopularityFound.setScore(songPopularityFound.getScore() + 1);
+            SongPopularityPut songPopularityPut = SongPopularityMapper.INSTANCE
+                    .songPopularityToPut(songPopularityFound);
+            songPopularityService.update(songPopularityPut);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
