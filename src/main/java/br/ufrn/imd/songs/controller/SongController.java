@@ -35,6 +35,10 @@ public class SongController {
         return new ResponseEntity<>(songService.save(song), HttpStatus.CREATED);
     }
 
+    @GetMapping("/count")
+    public Long count() {
+        return songService.count();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Song> findById(@PathVariable String id) throws Exception {
