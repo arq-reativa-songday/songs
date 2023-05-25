@@ -1,10 +1,9 @@
 package br.ufrn.imd.songs.controller;
 
-import br.ufrn.imd.songs.dto.song.SongPopularityPut;
 import br.ufrn.imd.songs.dto.song.SongPost;
 import br.ufrn.imd.songs.dto.song.SongPut;
+import br.ufrn.imd.songs.exception.NotFoundException;
 import br.ufrn.imd.songs.model.Song;
-import br.ufrn.imd.songs.model.SongPopularity;
 import br.ufrn.imd.songs.service.SongService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -36,12 +35,16 @@ public class SongController {
         return new ResponseEntity<>(songService.save(song), HttpStatus.CREATED);
     }
 
+    @GetMapping("/count")
+    public Long count() {
+        return songService.count();
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Song> findById(@PathVariable String id) throws Exception {
         return ResponseEntity.ok(songService
                 .findById(id)
-                .orElseThrow(() -> new Exception("Song don't exists.")));
+                .orElseThrow(() -> new NotFoundException("Song don't exists.")));
     }
 
     @PutMapping

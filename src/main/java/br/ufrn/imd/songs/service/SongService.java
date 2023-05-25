@@ -25,6 +25,10 @@ public class SongService {
         return songRepository.save(song);
     }
 
+    public Long count() {
+        return songRepository.count();
+    }
+
     public Optional<Song> findById(String id) {
         return songRepository.findById(id);
     }
