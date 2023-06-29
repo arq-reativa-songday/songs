@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,7 +26,7 @@ public class SongPopularityService {
 
     public SongPopularity save(SongPopularityPost songPopularityPost) {
         SongPopularity songPopularity = SongPopularityMapper.INSTANCE.postToSongPopularity(songPopularityPost);
-        songPopularity.setScore(0L);
+        songPopularity.setScore(1L);
         return songPopularityRepository.save(songPopularity);
     }
 
@@ -49,5 +50,18 @@ public class SongPopularityService {
 
     public void delete(String id) {
         songPopularityRepository.deleteById(id);
+    }
+
+    public void increasePopularity(String songId) {
+        SongPopularity songPopularity = songPopularityRepository.findBySongId(songId);
+
+        if(!Objects.isNull(songPopularity)){
+            songPopularity.setScore(songPopularity.getScore() + 1);
+            songPopularityRepository.save(songPopularity);
+        }
+        else{
+            save(new SongPopularityPost(songId, LocalDate.now(), "Empty", 0L));
+        }
+
     }
 }

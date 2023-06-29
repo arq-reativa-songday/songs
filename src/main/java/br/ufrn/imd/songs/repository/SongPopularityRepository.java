@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SongPopularityRepository extends MongoRepository<SongPopularity, String> {
+    SongPopularity findBySongId(String songId);
 }
