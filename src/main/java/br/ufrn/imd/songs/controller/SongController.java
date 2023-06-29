@@ -47,6 +47,11 @@ public class SongController {
                 .orElseThrow(() -> new NotFoundException("Song don't exists.")));
     }
 
+    @GetMapping(value = "/search")
+    public List<Song> findAllById(@RequestBody List<String> ids) {
+        return songService.findAllById(ids);
+    }
+
     @PutMapping
     public ResponseEntity<Song> update(@RequestBody SongPut songPut){
         return ResponseEntity.ok(songService.update(songPut));

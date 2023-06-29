@@ -33,6 +33,10 @@ public class SongService {
         return songRepository.findById(id);
     }
 
+    public List<Song> findAllById(List<String> ids) {
+        return songRepository.findAllById(ids);
+    }
+
     public List<Song> findAll(String genre, String artist, String name) {
         return songDynamicQuery.findAllByGenreAndArtistAndNameParams(genre, artist, name);
     }
