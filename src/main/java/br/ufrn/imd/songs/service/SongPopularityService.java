@@ -62,6 +62,5 @@ public class SongPopularityService {
         else{
             save(new SongPopularityPost(songId, LocalDate.now(), "Empty", 0L));
         }
-
     }
 }
